@@ -7,7 +7,9 @@ const Header = () => {
   const { getUser } = useGithub();
 
   const handleClickSubmit = () => {
-    if (query) getUser(query);
+    if (query) {
+      getUser(query);
+    }
   };
 
   return (

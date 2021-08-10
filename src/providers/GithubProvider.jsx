@@ -29,7 +29,8 @@ export const GithubProvider = ({ children }) => {
   const getUser = (userName) => {
     api
       .get(`/users/${userName}`)
-      .then(({ data }) =>
+      .then(({ data }) => {
+        setLoading(true);
         setGithubState((prevState) => {
           return {
             ...prevState,
@@ -47,14 +48,54 @@ export const GithubProvider = ({ children }) => {
               publicRepos: data.public_repos,
             },
           };
-        })
-      )
-      .catch((er) => console.log(er));
+        });
+      })
+      .catch(() => {
+        setLoading(false);
+        alert(
+          "This username doesn't exist or itsn't public. Please provide a valid one!"
+        );
+      });
+  };
+
+  const getRepos = (user) => {
+    api
+      .get(`/users/${user}/repos`)
+      .then(({ data }) => {
+        setGithubState((prevState) => {
+          return {
+            ...prevState,
+            repositories: data,
+          };
+        });
+      })
+      .catch((e) => {
+        console.log(e, "cannot load repositories");
+      });
+  };
+
+  const getStarred = (user) => {
+    api
+      .get(`/users/${user}/starred`)
+      .then(({ data }) => {
+        setGithubState((prevState) => {
+          return {
+            ...prevState,
+            starred: data,
+          };
+        });
+      })
+      .catch((e) => {
+        console.log(e, "cannot load starred");
+      });
   };
 
   const contextValue = {
     githubState,
+    loading,
     getUser: useCallback((user) => getUser(user), []),
+    getRepos: useCallback((user) => getRepos(user), []),
+    getStarred: useCallback((user) => getStarred(user), []),
   };
 
   return (

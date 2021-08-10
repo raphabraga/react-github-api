@@ -29,7 +29,7 @@ const Profile = () => {
           </S.WrapperUserGeneric>
           <S.WrapperUserGeneric>
             <h3>Blog: </h3>
-            <a href={data.user.blog} target="_blank">
+            <a href={data.user.blog} rel="noreferrer" target="_blank">
               {data.user.blog}
             </a>
           </S.WrapperUserGeneric>

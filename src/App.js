@@ -2,20 +2,22 @@ import React from "react";
 import Layout from "./components/Layout";
 import Profile from "./components/Profile";
 import Repositories from "./components/Repositories";
-import ResetCSS from "./global/ResetCSS";
-import { GithubProvider } from "./providers/GithubProvider";
+import useGithub from "./hooks/github-hooks";
+import NoSearch from "./components/NoSearch";
 
 const App = () => {
+  const { loading } = useGithub();
   return (
-    <main>
-      <GithubProvider>
-        <ResetCSS />
-        <Layout>
+    <Layout>
+      {loading ? (
+        <>
           <Profile />
           <Repositories />
-        </Layout>
-      </GithubProvider>
-    </main>
+        </>
+      ) : (
+        <NoSearch />
+      )}
+    </Layout>
   );
 };
 
